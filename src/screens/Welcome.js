@@ -1,18 +1,18 @@
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { button1 } from '../common/button'
-
+import { CommonClass } from '../styles/Commonclass'
 const Welcome = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.container1}>
-                <Text style={button1}
-                    onPress={() => navigation.navigate('login')}
-                >Login</Text>
-                <Text style={button1}
-                    onPress={() => navigation.navigate('signup')}
-                >Signup</Text>
+            <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: '100%', gap: 12 }}>
+                <TouchableOpacity style={CommonClass.welcomebutton} onPress={() => navigation.navigate('login')}>
+                    <Text>Login</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={CommonClass.welcomebutton} onPress={() => navigation.navigate('signup')}>
+                    <Text>Signup</Text>
+                </TouchableOpacity>
             </View>
         </View>
     )

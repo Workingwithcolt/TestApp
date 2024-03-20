@@ -5,6 +5,7 @@ import formcss, { formgroup, head1, head2, input, input1, label, link, link2 } f
 import axios from 'axios'
 import { urlHead } from '../helper/extrapropertise'
 import LoadingSpinner from '../GenericComponent/LoadingSpinneer'
+import { CommonClass } from '../styles/Commonclass'
 const Signup = ({ navigation }) => {
 
     const [fdata, setFdata] = useState({
@@ -101,9 +102,10 @@ const Signup = ({ navigation }) => {
                     />
                 </View>
                 <TouchableOpacity
+                    style={CommonClass.AddButton}
                     onPress={onSignUp}
                 >
-                    <Text style={button1}>Signup</Text>
+                    <Text >Signup</Text>
                 </TouchableOpacity>
             </ScrollView>
         </View>

@@ -101,5 +101,12 @@ export const CommonClass = {
         padding: 10,
         borderRadius: 5,
         width:'40%'
+    },
+    welcomebutton:{
+        alignItems: 'center',
+        backgroundColor: '#DDDDDD',
+        padding: 20,
+        borderRadius: 5,
+        margin: '0 auto'
     }
 }
