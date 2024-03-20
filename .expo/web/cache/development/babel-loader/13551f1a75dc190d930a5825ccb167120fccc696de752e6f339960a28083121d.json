@@ -1,0 +1,1 @@
+{"ast":null,"code":"export var urlHead = 'localhost:3000';","map":{"version":3,"names":["urlHead"],"sources":["D:/Logingfg - Copy/src/helper/extrapropertise.js"],"sourcesContent":["export const urlHead = 'localhost:3000'"],"mappings":"AAAA,OAAO,IAAMA,OAAO,GAAG,gBAAgB"},"metadata":{},"sourceType":"module","externalDependencies":[]}
