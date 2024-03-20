@@ -1,9 +1,11 @@
-import { MD2Colors,ActivityIndicator } from "react-native-paper";
-import { View, Text } from "react-native-web";
+import { SafeAreaView } from "react-native";
+import { MD2Colors, ActivityIndicator } from "react-native-paper";
 
-function LoadingSpinner({size = 'small'}) {
+function LoadingSpinner({ size = 'small' }) {
     return (
-          <ActivityIndicator animating={true} size={size} color={MD2Colors.red800} />
+        <SafeAreaView>
+            <ActivityIndicator animating={true} size={size} color={MD2Colors.red800} />
+        </SafeAreaView>
     )
 }
 

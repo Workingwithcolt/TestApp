@@ -1,16 +1,13 @@
 import React, { useReducer, useState } from 'react';
-import { Modal, View, Button, Text, ScrollView, TextInput, TouchableOpacity } from 'react-native';
-import { Propertylist, SchemaTypes, Section1, Section4, Section5, Section6 } from '../helper/extrapropertise';
+import { Modal, View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { SchemaTypes, Section1, Section4, Section5, Section6 } from '../helper/extrapropertise';
 import { ConvertBase64Format, blobToBase64, deepCopyObject } from '../helper/helper';
-import { dataview } from '../styles/Dataview';
 import { Divider } from 'react-native-paper';
 import { CommonClass } from '../styles/Commonclass';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import LoadingSpinner from './LoadingSpinneer';
-import { UPDATE_ON_ACCOUNT } from '../Endpoints/endpoints';
-import { GenericDatePicker } from './DatePicker';
+import { UPDATE_ON_USER } from '../Endpoints/endpoints';
 import * as DocumentPicker from 'expo-document-picker';
-import ModallImageView from '../screens/ModalImageView';
 import { Addproperty } from './Addproperty';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -79,11 +76,6 @@ export const ProjectModal = ({ init = {}, onSubmit, modalVisible, setModalVisibl
 
         } catch (e) {
             console.log(e);
-            // if(CustomeDocumentPicker.isCancel(e)){
-            //     console.log(e);
-            // }else{
-            //     console.log(e);
-            // }
         }
     }
 
@@ -108,7 +100,7 @@ export const ProjectModal = ({ init = {}, onSubmit, modalVisible, setModalVisibl
         onSuccess: () => {
             queryClient.invalidateQueries({
                 predicate: (query) =>
-                    query.queryKey.includes(UPDATE_ON_ACCOUNT)
+                    query.queryKey.includes(UPDATE_ON_USER)
             })
         },
 
@@ -117,10 +109,7 @@ export const ProjectModal = ({ init = {}, onSubmit, modalVisible, setModalVisibl
     var stausClass = (isPending || isSuccess) ? {
         position: 'relative', top: '50%', width: '80%', backgroundColor: 'white', padding: 20, borderRadius: 10
     } : { backgroundColor: 'white', padding: 20, borderRadius: 10 }
-   
 
-
-    // console.log(state);
     return (
         <Modal
             animationType="slide"
@@ -149,7 +138,7 @@ export const ProjectModal = ({ init = {}, onSubmit, modalVisible, setModalVisibl
                                         </View>)
                                         :
                                         <View>
-                                            <Text>Section 1: Client Basic Details</Text>
+                                            <Text>Section 1: Basic Information</Text>
                                             {
                                                 Section1.map((element, index) => {
                                                     return (
@@ -166,175 +155,9 @@ export const ProjectModal = ({ init = {}, onSubmit, modalVisible, setModalVisibl
                                                 })
                                             }
                                             <Divider />
-                                            <Text style={CommonClass.sectionTitle}>Section 2:Add Presentation Drawing</Text>
-                                            <View>
-                                                {
-                                                    state?.[Propertylist.PresentationDraw.name] && Object.entries(state[Propertylist.PresentationDraw.name])?.map(([key, value], index) => {
-                                                        return (
-                                                            <View >
-                                                                <Addproperty
-                                                                    Onchange={Onchange}
-                                                                    element={Propertylist.PresentationDraw}
-                                                                    onUpload={Upload}
-                                                                    state={state}
-                                                                    value={value}
-                                                                    index={index}
-                                                                    handleDelete={handleDelete}
-                                                                />
-                                                            </View>
-                                                        )
-                                                    })
-                                                }
-                                                <TouchableOpacity style={CommonClass.AddButton} onPress={() => {
-                                                    dispatch({ type: ADD_ARRAY, payload: { name: Propertylist.PresentationDraw.name } })
-                                                }}>
-                                                    <AntDesign name="addfile" size={24} color="black" />
-                                                </TouchableOpacity>
-                                            </View>
-                                            <Divider />
-                                            <Text style={CommonClass.sectionTitle}>Section 3: Add 3d Models</Text>
-                                            <View>
-                                                {
-                                                    state?.[Propertylist.FileModel3D.name] && Object.entries(state[Propertylist.FileModel3D.name])?.map(([key, value], index) => {
-                                                        return (
-                                                            <View >
-                                                                <Addproperty
-                                                                    Onchange={Onchange}
-                                                                    element={Propertylist.FileModel3D}
-                                                                    onUpload={Upload}
-                                                                    state={state}
-                                                                    value={value}
-                                                                    index={index}
-                                                                    handleDelete={handleDelete}
-                                                                />
-                                                            </View>
-                                                        )
-                                                    })
-                                                }
-                                                <TouchableOpacity style={CommonClass.AddButton} onPress={() => {
-                                                    dispatch({ type: ADD_ARRAY, payload: { name: Propertylist.FileModel3D.name } })
-                                                }}>
-                                                    <AntDesign name="addfile" size={24} color="black" />
-                                                </TouchableOpacity>
-                                            </View>
-                                            <Divider />
-                                            <Text style={CommonClass.sectionTitle}>Section 4</Text>
-                                            {
-                                                Section4.map(element => {
-                                                    return (
-                                                        <View>
-                                                            <Text style={{ marginTop: 0 }}>{element.placeholder}</Text>
-                                                            <Addproperty
-                                                                Onchange={Onchange}
-                                                                element={element}
-                                                                Upload={Upload}
-                                                                state={state}
-                                                                handleDelete={handleDelete}
-                                                            />
-                                                        </View>
-                                                    )
-                                                })
-                                            }
-                                            <Divider />
-                                            <Text style={CommonClass.sectionTitle}>Section 5: Add RCC Drawing</Text>
-                                            <View>
-                                                {
-                                                    state?.[Propertylist.RCCDrawing1.name] && Object.entries(state[Propertylist.RCCDrawing1.name])?.map(([key, value], index) => {
-                                                        return (
-                                                            <View >
-                                                                <Addproperty
-                                                                    Onchange={Onchange}
-                                                                    element={Propertylist.RCCDrawing1}
-                                                                    onUpload={Upload}
-                                                                    state={state}
-                                                                    value={value}
-                                                                    index={index}
-                                                                    handleDelete={handleDelete}
-                                                                />
-                                                            </View>
-                                                        )
-                                                    })
-                                                }
-                                                <TouchableOpacity style={CommonClass.AddButton} onPress={() => {
-                                                    dispatch({ type: ADD_ARRAY, payload: { name: Propertylist.RCCDrawing1.name } })
-                                                }}>
-                                                    <AntDesign name="addfile" size={24} color="black" />
-                                                </TouchableOpacity>
-                                            </View>
-                                            <Divider />
-                                            <Text style={CommonClass.sectionTitle}>Section 5</Text>
-                                            {
-                                                Section5.map(element => {
-                                                    let value = undefined
-                                                    if (element.type !== SchemaTypes.file) {
-                                                        value = state[element.name] ? state[element.name] : ""
-                                                    }
-                                                    return (
-                                                        <View>
-                                                            <Text>{element.placeholder}</Text>
-                                                            <Addproperty
-                                                                Onchange={Onchange}
-                                                                element={element}
-                                                                onUpload={Upload}
-                                                                state={state}
-                                                                handleDelete={handleDelete}
-                                                            />
-                                                        </View>
-                                                    )
-                                                })
-                                            }
-                                            <Divider />
-                                            <Text style={CommonClass.sectionTitle}>Section 5:Add Slab files</Text>
-                                            <View>
-                                                {
-                                                    state?.[Propertylist.Slab.name] && Object.entries(state[Propertylist.Slab.name])?.map(([key, value], index) => {
-                                                        return (
-                                                            <View style={dataview.fileContainer}>
-                                                                <Addproperty
-                                                                    Onchange={Onchange}
-                                                                    element={Propertylist.Slab}
-                                                                    onUpload={Upload}
-                                                                    state={state}
-                                                                    value={value}
-                                                                    index={index}
-                                                                    handleDelete={handleDelete}
-                                                                />
-                                                            </View>
-                                                        )
-                                                    })
-                                                }
-                                                <TouchableOpacity style={CommonClass.AddButton} onPress={() => {
-                                                    dispatch({ type: ADD_ARRAY, payload: { name: Propertylist.Slab.name } })
-                                                }}>
-                                                    <AntDesign name="addfile" size={24} color="black" />
-                                                </TouchableOpacity>
-                                            </View>
-                                            <Divider />
-                                            <Text style={CommonClass.sectionTitle}>Section 6</Text>
-                                            {
-                                                Section6.map(element => {
-                                                    let value = undefined
-                                                    if (element.type !== SchemaTypes.file) {
-                                                        value = state[element.name] ? state[element.name] : ""
-                                                    }
-                                                    return (
-                                                        <View>
-                                                            <Text>{element.placeholder}</Text>
-                                                            <Addproperty
-                                                                Onchange={Onchange}
-                                                                element={element}
-                                                                onUpload={Upload}
-                                                                state={state}
-                                                                handleDelete={handleDelete}
-                                                            />
-                                                        </View>
-                                                    )
-                                                })
-                                            }
                                             <TouchableOpacity style={CommonClass.AddButton} onPress={() => mutate()}>
                                                 <Text>Submit</Text>
                                             </TouchableOpacity>
-                                            <Text>End</Text>
                                         </View>
                         }
                     </View>

@@ -46,7 +46,7 @@ export const dataview = {
     },
     cardContainer: {
         display: "flex",
-        padding:5
+        padding: 5
     },
     stickyInput: {
         position: "sticky",
@@ -56,7 +56,7 @@ export const dataview = {
     },
     heightAndOverflow: {
         height: "auto",
-        padding:10,
+        padding: 10,
     },
     DataviewHeader: {
         display: "flex",
@@ -81,23 +81,23 @@ export const dataview = {
         gap: 0
     },
     img: {
-        display:'flex',
+        display: 'flex',
         width: 200,
         height: 200,
         borderRadius: 10,
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-      },
-      fileContainer:{
-        display:"flex",
-        flexDirection:'column',
-        gap:0,
-        marginBottom:5,
+    },
+    fileContainer: {
+        display: "flex",
+        flexDirection: 'column',
+        gap: 0,
+        marginBottom: 5,
         borderWidth: 1,
         borderColor: "thistle",
         borderRadius: 5,
-        padding:5
-      }
+        padding: 5
+    }
 
 };

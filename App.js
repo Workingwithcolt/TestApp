@@ -5,14 +5,11 @@ import Welcome from './src/screens/Welcome';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ProjectDetailsModal from './src/screens/Homepage';
-import Verification from './src/screens/Verification';
 import GenericBodyCard from './src/GenericComponent/GenericBodyCard';
-import { Users } from './src/screens/Users';
-import { Projects } from './src/screens/Projects';
 import { PaperProvider, MD3LightTheme as DefaultTheme, } from 'react-native-paper';
-import { ShowTableFiles } from './src/GenericComponent/ShowTableFiles';
 import { ProjectModal } from './src/GenericComponent/ProjectModal';
-
+import CheckoutScreen from './src/screens/Payment';
+import { StripePayments } from './src/GenericComponent/StripePayment';
 
 const lightTheme = {
   "colors": {
@@ -66,34 +63,18 @@ const theme = {
 
 const Stack = createNativeStackNavigator();
 
-const UserComponent = ({ navigation }) => {
-  return (
-    <GenericBodyCard>
-      <Users navigation={navigation} />
-    </GenericBodyCard>
-  )
-}
-const AccountComponent = ({ navigation }) => {
-  return (
-    <GenericBodyCard>
-      <Projects navigation={navigation} />
-    </GenericBodyCard>
-  )
-}
-
-const ShowTableFilesComponent = ({ navigation, route }) => {
-  return (
-    <GenericBodyCard>
-      < ShowTableFiles navigation={navigation} route={route} />
-    </GenericBodyCard>
-  )
-}
-
 const HomepageComponent = ({ navigation, route }) => {
   return (
     <GenericBodyCard>
       < ProjectDetailsModal navigation={navigation} route={route} />
     </GenericBodyCard>
+  )
+}
+const PaymentComponent = ({navigation,route}) =>{
+  return(
+    <StripePayments>
+     <CheckoutScreen navigation={navigation} route={route}/>
+    </StripePayments>
   )
 }
 
@@ -106,7 +87,8 @@ export default function App() {
             options={
               {
                 headerShown: true,
-                headerBackButtonMenuEnabled: true
+                headerBackButtonMenuEnabled: true,
+                headerBackVisible:false
               }
             }
           />
@@ -114,6 +96,7 @@ export default function App() {
             options={
               {
                 headerShown: true,
+                headerBackVisible:false,
                 headerBackButtonMenuEnabled: true
 
               }
@@ -123,7 +106,8 @@ export default function App() {
             options={
               {
                 headerShown: true,
-                headerBackButtonMenuEnabled: true
+                headerBackButtonMenuEnabled: true,
+                headerBackVisible:false
 
               }
             }
@@ -153,8 +137,9 @@ export default function App() {
             }
             initialParams={{ data: undefined }}
           />
-
-          <Stack.Screen name="Verification" component={Verification}
+          <Stack.Screen name="payment" component={
+            PaymentComponent
+          }
             options={
               {
                 headerShown: true,
@@ -162,38 +147,6 @@ export default function App() {
 
               }
             }
-          />
-          <Stack.Screen name="Users" component={
-            UserComponent}
-            options={
-              {
-                headerShown: true,
-                headerBackButtonMenuEnabled: true
-
-              }
-            }
-          />
-          <Stack.Screen name="Projects" component={
-            AccountComponent}
-            options={
-              {
-                headerShown: true,
-                headerBackButtonMenuEnabled: true
-
-              }
-            }
-          />
-
-          <Stack.Screen name="showFilesTable" component={
-            ShowTableFilesComponent}
-            options={
-              {
-                headerShown: true,
-                headerBackButtonMenuEnabled: true
-
-              }
-            }
-            initialParams={{ id: undefined }}
           />
         </Stack.Navigator>
       </PaperProvider>

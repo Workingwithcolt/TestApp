@@ -55,7 +55,6 @@ export const Addproperty = ({ element, Onchange, onUpload, state, handleDelete, 
     return (
         <View>
             <TextInput
-                textContentType=''
                 style={element.style}
                 onChangeText={(e) =>
                     Onchange(e, element)}

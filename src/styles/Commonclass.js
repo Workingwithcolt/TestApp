@@ -77,5 +77,29 @@ export const CommonClass = {
     TextWrap: {
         textOverflow: 'ellipsis',
 
+    },
+    TextKey:{
+        display: 'flex',
+        alignItems: 'flex-end',
+        backgroundColor: '#DDDDDD',
+        padding: 10,
+        borderRadius: 5,
+        width:'50%'
+    },
+    Textvalue:{
+        display: 'flex',
+        alignItems: 'flex-end',
+        backgroundColor: '#bbe4e9',
+        padding: 10,
+        borderRadius: 5,
+        width:'40%'
+    },
+    Texttitle:{
+        display: 'flex',
+        alignItems: 'flex-end',
+        backgroundColor: '#5585b5',
+        padding: 10,
+        borderRadius: 5,
+        width:'40%'
     }
 }

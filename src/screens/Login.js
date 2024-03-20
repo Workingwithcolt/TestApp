@@ -1,104 +1,114 @@
-import { StyleSheet, Text, View, Image, TextInput } from 'react-native'
+import { StyleSheet, Text, View, Image, TextInput, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-import pattern from '../../assets/pattern.png'
-import logo from '../../assets/mainlogo.png'
 import { button1 } from '../common/button'
-import { errormessage, formgroup, head1, head2, input, label, link, link2 } from '../common/formcss'
+import { formgroup, head1, head2, input, label, link, link2 } from '../common/formcss'
 import { urlHead } from '../helper/extrapropertise'
-import e from 'cors'
+import axios from 'axios'
+import LoadingSpinner from '../GenericComponent/LoadingSpinneer'
+import formcss from '../common/formcss'
+import { CommonClass } from '../styles/Commonclass'
+
 
 const Login = ({ navigation }) => {
     const [fdata, setFdata] = useState({
         email: '',
         password: ''
     })
+    const [Process, setProcess] = useState({
+        isloading: false,
+        error: "",
+        isSuccess: false
+
+    });
 
     const [errormsg, setErrormsg] = useState(null);
 
-    const Sendtobackend = () => {
-        console.log(fdata);
-        if (fdata.email == '' || fdata.password == '') {
-            setErrormsg('All fields are required');
-            return;
-        }
-        else {
-            fetch( `https://${urlHead}/signin`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(fdata)
-            })
-                .then(res => res.json()).then(
-                    data => {
-                        console.log(data);
-                        if (data.error) {
-                            setErrormsg(data.error);
-                        }
-                        else {
-                            // alert('logged successfully');
-                            navigation.navigate('homepage');
-                        }
-                    }
-                ).catch((e)=>{
-                    console.log(e)
+    const onLogin = async (e) => {
+        try {
+            if (fdata.email !== "" && fdata.password !== "") {
+                setProcess({
+                    ...Process, error: "", isloading: true
                 })
+                const res = await axios.post(urlHead + '/signin', fdata);
+                console.log(res.data.user);
+                if (res.data.error) {
+                    setProcess({
+                        ...Process, error: res.data.error, isloading: false
+                    })
+                } else {
+                    navigation.navigate('homepage', {
+                        user: res.data.user,
+                        token: res.data.token
+                    })
+                    setProcess({
+                        ...Process, error: "", isloading: false
+                    })
+                    setFdata({
+                        email: '',
+                        password: ''
+                    })
+                }
+            } else {
+                setProcess({
+                    ...Process, error: "Please Fill All Fields..", isloading: false
+                })
+            }
+        } catch (e) {
+            setProcess({
+                ...Process, error: e.response.data.error, isloading: false
+            })
         }
     }
+
+    if (Process.isloading) {
+        return (
+            <LoadingSpinner size='large' />
+        )
+    }
+
+
     return (
-        <View style={styles.container}>
-            <Image style={styles.patternbg} source={pattern} />
+        <ScrollView style={styles.container}>
+            <View style={styles.s2}>
+                <Text style={head1}>Login</Text>
+                <Text style={head2}>Sign in to continue</Text>
+                {
+                    Process.error !== "" &&
+                    <View>
+                        <Text style={formcss.errormessage}>{"Contact Admin"}</Text>
+                    </View>
+                }
+                <View style={formgroup}>
+                    <Text style={label}>Email</Text>
+                    <TextInput style={input}
+                        placeholder="Enter your email"
 
-            <View style={styles.container1} >
-                <View style={styles.s1}>
-                    <Image style={styles.logo} source={logo} />
-                    <Text style={styles.h1} onPress={() => navigation.navigate('welcome')}>Used2, Inc.</Text>
-                    <Text style={styles.small1}>Buying and selling online</Text>
+                        onPressIn={() => setErrormsg(null)}
+                        onChangeText={(text) => setFdata({ ...fdata, email: text })}
+                    />
                 </View>
-                <View style={styles.s2}>
+                <View style={formgroup}>
+                    <Text style={label}>Password</Text>
+                    <TextInput style={input}
+                        placeholder="Enter your password"
+                        secureTextEntry={true}
+                        onChangeText={(text) => setFdata({ ...fdata, password: text })}
+                        onPressIn={() => setErrormsg(null)}
 
-                    <Text style={head1}>Login</Text>
-                    <Text style={head2}>Sign in to continue</Text>
-                    {
-                        errormsg ? <Text style={errormessage}>{errormsg}</Text> : null
-                    }
-                    <View style={formgroup}>
-                        <Text style={label}>Email</Text>
-                        <TextInput style={input}
-                            placeholder="Enter your email"
-
-                            onPressIn={() => setErrormsg(null)}
-                            onChangeText={(text) => setFdata({ ...fdata, email: text })}
-                        />
-                    </View>
-                    <View style={formgroup}>
-                        <Text style={label}>Password</Text>
-                        <TextInput style={input}
-                            placeholder="Enter your password"
-
-                            secureTextEntry={true}
-
-                            onChangeText={(text) => setFdata({ ...fdata, password: text })}
-                            onPressIn={() => setErrormsg(null)}
-
-                        />
-                    </View>
-                    <View style={styles.fp}>
-                        <Text style={link}>Forgot Password?</Text>
-                    </View>
-                    <Text style={button1}
-                        onPress={() => Sendtobackend()}
-                    >Login</Text>
-                    <Text style={link2}>Don't have an account?&nbsp;
-                        <Text style={link}
-                            onPress={() => navigation.navigate('signup')}
-                        >
-                            Create a new account
-                        </Text>
+                    />
+                </View>
+                <TouchableOpacity style={CommonClass.AddButton} onPress={onLogin}>
+                    <Text>Login</Text>
+                </TouchableOpacity>
+                <Text style={link2}>Don't have an account?&nbsp;
+                    <Text style={link}
+                        onPress={() => navigation.navigate('signup')}
+                    >
+                        Create a new account
                     </Text>
-                </View>
+                </Text>
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
@@ -119,8 +129,9 @@ const styles = StyleSheet.create({
     },
     container1: {
         display: 'flex',
-        justifyContent: 'center',
         alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
         height: '100%',
         width: '100%',
     },
@@ -143,7 +154,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         backgroundColor: '#fff',
         width: '100%',
-        height: '60%',
+        height: '100%',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         padding: 20,
